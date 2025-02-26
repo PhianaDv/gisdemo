@@ -44,7 +44,6 @@ export const slicers = {
         "proposed_use":"Proposed Use",
         "permit_type_definition":"Permit Type",
         "proposed_units_tier":"Proposed Units Tier",
-        "stories_tier":"Proposed Stories Tier"
     },
 };
 
@@ -53,7 +52,7 @@ export const viewLevels = [
 ];
 
 export const viewLevelFps = [
-"tractfp","blkgrpfp","blockfp"
+11,12,15
 ]
 
 export const viewLevelGeom = [
@@ -63,7 +62,7 @@ export const viewLevelGeom = [
 const initialState = {
     viewState: INITIAL_VIEW_STATE,
     viewLevel: "Tract",
-    viewLevelFp: "tractfp",
+    viewLevelFp: 11,
     viewLevelGeoField: "centroidtract",
     viewType: "Permits",
     fid: [],

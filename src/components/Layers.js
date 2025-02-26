@@ -95,7 +95,7 @@ const Layers = () => {
             let result2 = 1
             if (currentFid.length === 0) {
               result2 = result2
-            } else if (d.properties[viewLevelFps[nextViewLevel-2]] === currentFid) {
+            } else if (d.properties.blockfp.slice(0,viewLevelFps[nextViewLevel-2]) === currentFid) {
               result2 = result2
             } else {
               result2 = 0
@@ -170,7 +170,7 @@ const Layers = () => {
         },
         extensions: [new DataFilterExtension({filterSize: 1})],
         filterRange: [1, 1],
-        getFilterValue: (d) => viewLevelFp === "tractfp" ? 1 : d.properties.id.startsWith(currentFid) ? 1 : 0,
+        getFilterValue: (d) => viewLevelFp === 11 ? 1 : d.properties.id.startsWith(currentFid) ? 1 : 0,
         updateTriggers: {
           getFilterValue: [currentFid],
           getFillColor: [highlightFp],

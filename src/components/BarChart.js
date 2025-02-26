@@ -12,7 +12,7 @@ const processBarChartData = (data, sumBy, viewLevelFp) => {
   const aggregatedData = d3.rollups(
     data,
     v => sumBy === "count" ? v.length : d3.sum(v, d => d.properties[sumBy] || 0),
-    d => d.properties[viewLevelFp]
+    d => d.properties.blockfp.slice(0,viewLevelFp)
   );
 
   return aggregatedData

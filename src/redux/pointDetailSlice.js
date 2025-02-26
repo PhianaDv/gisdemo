@@ -11,17 +11,16 @@ export const getPointDetailAsync = createAsyncThunk(
     async (payload) => {
         let response
         switch (payload.viewType) {
-            case 'Permits': response = await fetch('http://172.16.50.72:9000/functions/public._apermitpoint/items.json?qid='+payload.id);
-                break;
-            case 'Customers': response = await fetch('http://172.16.50.72:9000/functions/public._acustomerpoint/items.json?properties=productcode,status,quantity,startdate&mid='+payload.id);
-                break;        
-            default: response = await fetch('http://172.16.50.72:9000/functions/public._apermitpoint/items.json?qid='+payload.id);
+            case 'Permits': response = await fetch('https://data.sfgov.org/resource/i98e-djp9.json?permit_number='+payload.id);
+                break;  
+            default: response = await fetch('https://data.sfgov.org/resource/i98e-djp9.json?permit_number='+payload.id);
                 break;
         };
       
       if (response.ok) {
 
         const pointDetail = await response.json();
+        console.log(pointDetail)
         const result = payload.viewType == 'Permits' 
             ? {
                 x:payload.x,

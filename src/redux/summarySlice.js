@@ -53,14 +53,14 @@ const initialState = {
         if (payload.fid && payload.viewLevelFp && !payload.trueKeys) {
             console.log(1)
             filteredFeatures = state.filteredFeatures.filter(
-            (item) => item.properties[payload.viewLevelFp] === payload.fid
+            (item) => item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid
           );
         } else if (payload.fid && payload.viewLevelFp && payload.trueKeys) {
             console.log(payload)
             let newArray = []
             pointData = pointData.features;
             pointData = pointData.filter((item) => 
-                item.properties[payload.viewLevelFp] === payload.fid);
+                item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid);
             
             const testArray = Object.keys(payload.trueKeys);
             const dataProperties = Object.keys(pointData[0].properties);
@@ -151,13 +151,13 @@ const initialState = {
                 v => payload.sumBy === "count" 
                       ? v.length // Count occurrences
                       : d3Array.sum(v, d => d.properties[payload.sumBy] || 0), // Count features in each first-level group
-                d => d.properties[payload.viewLevelFp]
+                d => d.properties.blockfp.slice(0,payload.viewLevelFp)
             );
             
             // Step 2: Group data by first-level and second-level properties
             const groupedData = d3Array.group(
                 data,
-                d => d.properties[payload.viewLevelFp], // First-level group
+                d => d.properties.blockfp.slice(0,payload.viewLevelFp), // First-level group
                 d => d.properties[payload.slicer]       // Second-level group
             );
             
@@ -293,7 +293,7 @@ const summarySlice = createSlice({
                     state.filteredFeatures = data
                     state.loading = false
                 } else {
-                    const filtered = data.filter((item) => item.properties[action.payload.viewLevelFp] === action.payload.fid);
+                    const filtered = data.filter((item) => item.properties.blockfp.slice(0,action.payload.viewLevelFp) === action.payload.fid);
                     state.filteredFeatures = filtered;
                     state.loading = false
                 }
@@ -306,17 +306,17 @@ const summarySlice = createSlice({
                    
                 let data = state.filteredFeatures
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
-                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties[action.payload.fpFilter.viewLevelFp] === action.payload.fpFilter.fp);
+                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1])
                 temp = data;
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && action.payload.timeFilter) {
                 let data = state.filteredFeatures
-                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties[action.payload.fpFilter.viewLevelFp] === action.payload.fpFilter.fp);
+                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
                 temp = data;
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
                 let data = state.filteredFeatures
-                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties[action.payload.fpFilter.viewLevelFp] === action.payload.fpFilter.fp);
+                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 temp = data
             } else if (!action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
                 let data = state.filteredFeatures
@@ -324,7 +324,7 @@ const summarySlice = createSlice({
                 temp = data
             } else if (action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
                 let data = state.filteredFeatures
-                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties[action.payload.fpFilter.viewLevelFp] === action.payload.fpFilter.fp);
+                data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
                 temp = data;
             } else if (action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
