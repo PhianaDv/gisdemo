@@ -3,19 +3,21 @@ import { MVTLayer, ScatterplotLayer, HeatmapLayer, GridLayer, GeoJsonLayer } fro
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { useCallback } from 'react';
 import { colorSuppliersRGB } from '../assets/MyColors';
-import { filterDataAsync } from '../redux/summarySlice';
+import { filterDataAsync, tempFilter } from '../redux/summarySlice';
 import { drilldown, getBbox, testBorders } from '../redux/borderSlice';
 import { viewLevels, changeViewLevel, viewLevelFps } from '../redux/viewStateSlice';
 import { getPointDetailAsync } from '../redux/pointDetailSlice';
 import { pointOpen } from '../redux/pointDetailSlice';
 import { scaleLinear, interpolateRgb, interpolateHsl } from 'd3';
 import { setTempFilterFp } from '../redux/dataFilterSlice';
+import { switchAnalytics } from '../redux/pageStateSlice';
 
 
 
 
 
 const Layers = () => {
+    const analyticsState = useSelector((state) => state.pageState.openAnalytics);
     const timeData = useSelector((state) => state.temporalState);
     const timeWeight = useSelector((state) => state.summaryState.timeWeightRange)
     const dataFilters = useSelector((state) => state.dataFilterState);
@@ -36,6 +38,7 @@ const Layers = () => {
     const nextViewLevel = viewLevels.indexOf(viewLevel)+1;
     const dispatch = useDispatch();
     const highlightFp = useSelector((state) => state.dataFilterState.tempHighlightFp);
+    const filterFp = useSelector((state) => state.dataFilterState.tempFilterFp)
     const colorTimeLayer = useCallback((d) => {
       if (!d || timeWeight.length === 0) {
           return [49, 96, 235]; // Default color as RGB array [R, G, B]
@@ -220,7 +223,12 @@ const Layers = () => {
         },
         pickable: true,
         autoHighlight: true,
-        onClick: (o) => {dispatch(setTempFilterFp(o.object.id))},
+        onClick: (o) => {
+          dispatch(setTempFilterFp(o.object.id));
+          if (!analyticsState && filterFp === 0) {
+            dispatch(switchAnalytics(true))
+          };
+        },
         //pointBillboard: true,
     }),
     new ScatterplotLayer({

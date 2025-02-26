@@ -18,8 +18,13 @@ const pageStateSlice = createSlice({
         resetPageState: () => {
             return initialState
         },
-        switchAnalytics: (state) => {
-            state.openAnalytics = !state.openAnalytics
+        switchAnalytics: (state, action) => {
+            if (action.payload) {
+                state.openAnalytics = action.payload
+            } else {
+                state.openAnalytics = !state.openAnalytics
+            }
+            
         },
         switchLayers: (state) => {
             state.openLayers = !state.openLayers
