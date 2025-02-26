@@ -126,7 +126,7 @@ const Layers = () => {
         onClick: (o) => {
           dispatch(getPointDetailAsync({
           viewType: viewType,
-          id: o.object.id,
+          id: o.object.properties.permit_number,
           x:o.x,
           y:o.y
           }));
@@ -166,7 +166,6 @@ const Layers = () => {
             }
             )
           }
-          console.log(o.object.properties.id )
         },
         extensions: [new DataFilterExtension({filterSize: 1})],
         filterRange: [1, 1],

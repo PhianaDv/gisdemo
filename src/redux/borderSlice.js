@@ -24,7 +24,6 @@ export const getBbox = createAsyncThunk(
       const response = await fetch(flyToPolygon(payload.fid)[payload.viewLevel]);
       if (response.ok) {
           const polygon = await response.json()
-          console.log("gotPolygon")
         const [minLng, minLat, maxLng, maxLat] = bbox(polygon)  
         return {
             flyTo: [[minLng, minLat], [maxLng, maxLat]],
@@ -38,7 +37,6 @@ let f
     if (viewLevel === "Tract") {
         f = 1
     } else {
-        console.log(tBorders(viewLevel, upperfid))
         const response =  await fetch(tBorders(viewLevel, upperfid))
 
         if (response.ok) {

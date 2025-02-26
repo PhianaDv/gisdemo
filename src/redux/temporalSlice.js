@@ -123,7 +123,7 @@ const temporalSlice = createSlice({
             if (!action.payload.data) {
                 return null;
               }
-              console.log(action.payload.data)
+    
               const weightRange = action.payload.data.reduce(
                 (range, d) => {
                   const t = Number(d[action.payload.field]).toFixed(2);
@@ -161,7 +161,7 @@ const temporalSlice = createSlice({
             }
 
             if (count === Object.keys(state.fields).length) {
-                console.log('ready')
+
                 state.notReady = false
             }
         },

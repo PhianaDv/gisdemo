@@ -112,7 +112,6 @@ useEffect(() => {
   },[pointState.timeRange])
 
   useEffect(() => {
-    console.log(viewStateDetails.fid, viewStateDetails.viewLevelFp)
        
     if (Object.entries(dataFilters.trueKeys).length === 0 || pointState.loading) {
       return
@@ -121,7 +120,6 @@ useEffect(() => {
         trueKeys: {...dataFilters.trueKeys},
       }))
     } else {
-      console.log(prevViewLevel)
       dispatch(filterDataAsync({
         trueKeys: {...dataFilters.trueKeys},
         fid: viewStateDetails.fid, 
@@ -186,7 +184,7 @@ useEffect(() => {
       map.__deck.setProps({ layers });
       
     } else {
-      console.warn("No layers to render");
+      return
     }
   }, [mapLoaded, layers, slicer, dataFilters, layerState.Layers, flyTo, timeData, summaryState.loading]);
   
@@ -198,7 +196,6 @@ useEffect(() => {
     }
     
     const map = mapRef.current.getMap();
-    console.log(map)
     switch (layerState.data.building.building) {
       case false: map.setLayoutProperty("building-3d", 'visibility', 'none'); break;
       case true: map.setLayoutProperty("building-3d", 'visibility', 'visible'); break;

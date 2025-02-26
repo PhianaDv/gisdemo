@@ -122,8 +122,6 @@ const dataFilterSlice = createSlice({
           newValue = action.payload
         } 
         state.tempTimeFilter = newValue;
-        console.log(newValue)
-        console.log(action.payload)
       },
       sliderSetTempTimeFilter: (state, action) => {
         state.tempTimeFilter = action.payload

@@ -51,13 +51,11 @@ const initialState = {
         let filteredFeatures = [];
   
         if (payload.fid && payload.viewLevelFp && !payload.trueKeys) {
-            console.log(1)
+
             filteredFeatures = state.filteredFeatures.filter(
             (item) => item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid
           );
         } else if (payload.fid && payload.viewLevelFp && payload.trueKeys) {
-            console.log(payload)
-            let newArray = []
             pointData = pointData.features;
             pointData = pointData.filter((item) => 
                 item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid);
@@ -81,13 +79,11 @@ const initialState = {
                     }
                 }
                 if (result === Object.keys(payload.trueKeys).length) {
-                    newArray.push(pointData[i])
+                    filteredFeatures.push(pointData[i])
                 }
                 }
 
             }
-            console.log(newArray)
-            filteredFeatures = newArray
         } else {
 
 

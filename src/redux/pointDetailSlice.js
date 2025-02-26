@@ -20,7 +20,6 @@ export const getPointDetailAsync = createAsyncThunk(
       if (response.ok) {
 
         const pointDetail = await response.json();
-        console.log(pointDetail)
         const result = payload.viewType == 'Permits' 
             ? {
                 x:payload.x,
@@ -51,16 +50,13 @@ const pointDetailSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getPointDetailAsync.pending, (state) => {
-            console.log("loading")
             state.loading=true
         })
         builder.addCase(getPointDetailAsync.fulfilled, (state, action) => {
-            console.log("loaded")
             state.loading=false
             state.data=action.payload
         })
         builder.addCase(getPointDetailAsync.rejected, (state, action) => {
-            console.log("error")
             state.loading=false
             state.error=action.error.message
         })
