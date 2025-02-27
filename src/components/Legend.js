@@ -26,7 +26,7 @@ export const Legend = () => {
     useEffect(() => {
         let lArray = [];
         legendData.slicerValues.map(el => {
-            lArray.push(JSON.parse(el.value).length * 56);
+            lArray.push(el.value.length * 56);
         });
         setBorderHeight(Math.max(...lArray));
 
@@ -113,7 +113,7 @@ export const Legend = () => {
                                 overflowY: "auto",
                                 
                             }}>
-                                {JSON.parse(el.value)
+                                {el.value
                                     .filter(obj => obj.key && obj.key.toLowerCase().includes(searchQuery.toLowerCase()))
                                     .map(obj => (
                                         <FormControlLabel

@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { MVTLayer, ScatterplotLayer, HeatmapLayer, GridLayer, GeoJsonLayer } from 'deck.gl';
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { colorSuppliersRGB } from '../assets/MyColors';
-import { filterDataAsync, tempFilter } from '../redux/summarySlice';
+import { filterDataAsync } from '../redux/summarySlice';
 import { drilldown, getBbox, testBorders } from '../redux/borderSlice';
 import { viewLevels, changeViewLevel, viewLevelFps } from '../redux/viewStateSlice';
 import { getPointDetailAsync } from '../redux/pointDetailSlice';
@@ -11,6 +11,7 @@ import { pointOpen } from '../redux/pointDetailSlice';
 import { scaleLinear, interpolateRgb, interpolateHsl } from 'd3';
 import { setTempFilterFp } from '../redux/dataFilterSlice';
 import { switchAnalytics } from '../redux/pageStateSlice';
+import { slicerValues } from '../redux/dataFilterSlice';
 
 
 
@@ -22,6 +23,7 @@ const Layers = () => {
     const timeWeight = useSelector((state) => state.summaryState.timeWeightRange)
     const dataFilters = useSelector((state) => state.dataFilterState);
     const slicer = useSelector((state) => state.viewState.slicer);
+    const [attr, setAttr] = useState(slicerValues.find(item => item.attribute === slicer))
     const viewType = useSelector((state) => state.viewState.viewType);
     const viewLevel = useSelector((state) => state.viewState.viewLevel);
     const viewLevelFp = useSelector((state) => state.viewState.viewLevelFp);
@@ -38,7 +40,15 @@ const Layers = () => {
     const nextViewLevel = viewLevels.indexOf(viewLevel)+1;
     const dispatch = useDispatch();
     const highlightFp = useSelector((state) => state.dataFilterState.tempHighlightFp);
-    const filterFp = useSelector((state) => state.dataFilterState.tempFilterFp)
+    const filterFp = useSelector((state) => state.dataFilterState.tempFilterFp);
+
+
+    useEffect(() => {
+        setAttr(slicerValues.find(item => item.attribute === slicer))
+    
+      },[slicer])
+
+
     const colorTimeLayer = useCallback((d) => {
       if (!d || timeWeight.length === 0) {
           return [49, 96, 235]; // Default color as RGB array [R, G, B]
@@ -115,7 +125,7 @@ const Layers = () => {
         visible: layerState.pointLayer.visible,
         data: pointData,
         getPosition: (d) => d.geometry.coordinates, 
-        getFillColor: (d) => colorSuppliersRGB(d.properties[slicer]),
+        getFillColor: (d) => colorSuppliersRGB(attr.value.find(item => item.value === d.properties[slicer])?.key),
         getPointRadius: d => 1,
         radiusScale: 5,
         radiusMinPixels: 1,

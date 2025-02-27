@@ -24,6 +24,7 @@ export const getPointsAsync = createAsyncThunk(
       }
     
   );
+  
 
   
 const pointJsonSlice = createSlice({

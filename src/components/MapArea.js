@@ -45,22 +45,14 @@ const MapArea = () => {
 
 
 
-  useEffect(() => {
-    dispatch(getAttributesAsync(viewType))
-    
-    },[viewType]);
 
     useEffect(() => {
-      if (dataFilters.loading === true) {
-        return
-      }
-      else if (dataFilters.slicerValues.length === 0) {
+      if (dataFilters.slicerValues.length === 0) {
         return
       }
       else {
         dispatch(setTrueKeys())
       }
-      
     },[dataFilters.slicerValues]);
 
 

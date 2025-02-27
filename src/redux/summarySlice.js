@@ -3,7 +3,8 @@ import * as d3Array from 'd3-array';
 import { timeFormat, format } from "d3";
 
 const formatTimestamp = timeFormat("%y-%b");
-export const d3FormatNumber = format(".2s")
+export const d3FormatNumber = format(".2s");
+
 
 const initialState = { 
     initialLoading: true,
@@ -45,17 +46,19 @@ const initialState = {
   export const filterDataAsync = createAsyncThunk(
     "summary/filterDataAsync",
     async (payload, { getState }) => {
+        
      
         const state = getState().summaryState;
         let pointData = getState().pointJsonState.data
         let filteredFeatures = [];
   
         if (payload.fid && payload.viewLevelFp && !payload.trueKeys) {
-
+            
             filteredFeatures = state.filteredFeatures.filter(
             (item) => item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid
           );
         } else if (payload.fid && payload.viewLevelFp && payload.trueKeys) {
+            
             pointData = pointData.features;
             pointData = pointData.filter((item) => 
                 item.properties.blockfp.slice(0,payload.viewLevelFp) === payload.fid);
@@ -67,13 +70,11 @@ const initialState = {
             if (pointData.length > 0 && contains === true) {
                 for (let i = 0; i < pointData.length; i++) {
                 let result = 0;
-                for (const [key, value] of Object.entries(payload.trueKeys)) { {
-                        
-                    }
+                for (const [key, value] of Object.entries(payload.trueKeys)) {
                     const check =
                     pointData[i].properties[key] == null
                         ? null
-                        : pointData[i].properties[key].toString();
+                        : pointData[i].properties[key];
                     if (value.includes(check)) {
                     result += 1;
                     }
@@ -86,11 +87,11 @@ const initialState = {
             }
         } else {
 
-
+            
             const testArray = Object.keys(payload.trueKeys);
             const dataProperties = Object.keys(pointData.features[0].properties);
             const contains = testArray.every((r) => dataProperties.indexOf(r) > -1);
-    
+           
             if (Object.keys(pointData).length > 0 && contains === true) {
                 for (let i = 0; i < pointData.features.length; i++) {
                 let result = 0;
@@ -100,7 +101,7 @@ const initialState = {
                     const check =
                     pointData.features[i].properties[key] == null
                         ? null
-                        : pointData.features[i].properties[key].toString();
+                        : pointData.features[i].properties[key];
                     if (value.includes(check)) {
                     result += 1;
                     }
@@ -261,7 +262,7 @@ const summarySlice = createSlice({
                         let result = 0
                         for (const [key, value] of Object.entries(action.payload.trueKeys)) {
                             
-                            const check = action.payload.data.features[i].properties[key] == null ? "" : action.payload.data.features[i].properties[key].toString();
+                            const check = action.payload.data.features[i].properties[key] == null ? "" : action.payload.data.features[i].properties[key];
                             value.includes(check)? result = result+1: result = result
                         }
                         if (result === Object.keys(action.payload.trueKeys).length) {
@@ -280,45 +281,45 @@ const summarySlice = createSlice({
                 }
         },
         tempFilter: (state, action) => {
-            let temp = [];
+            let data = state.filteredFeatures
             if (!action.payload) {
-                temp = temp
+                data = data
             } else if (action.payload.attributeFilter && action.payload.fpFilter && action.payload.timeFilter) {
                    
-                let data = state.filteredFeatures
+                
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1])
-                temp = data;
+                
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && action.payload.timeFilter) {
-                let data = state.filteredFeatures
+                
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
-                temp = data;
+                
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
-                let data = state.filteredFeatures
+                
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
-                temp = data
+                
             } else if (!action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
-                let data = state.filteredFeatures
+                
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
-                temp = data
+                
             } else if (action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
-                let data = state.filteredFeatures
+                
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
-                temp = data;
+                
             } else if (action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
-                let data = state.filteredFeatures
+                
                 data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
-                temp = data
+                
             } else {
-                const data = state.filteredFeatures
-                temp = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
+                
+                data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
             }
             
-            state.tempFilteredFeatures = temp;
+            state.tempFilteredFeatures = data;
         }
     },
     extraReducers: (builder) => {
@@ -343,12 +344,6 @@ const summarySlice = createSlice({
         builder.addCase(filterDataAsync.rejected, (state, action) => {
             state.error = `Filtering failed: ${action.error.message}`;
         })
-        builder.addCase(applyTimeFilterAsync.fulfilled, (state, action) => {
-            state.timeFilteredFeatures = action.payload;
-        });
-        builder.addCase(applyTimeFilterAsync.rejected, (state, action) => {
-            state.error = `Time Filtering failed: ${action.error.message}`;
-        });
     },
   
 });

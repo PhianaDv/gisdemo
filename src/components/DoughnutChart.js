@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { colorSuppliersHEX } from '../assets/MyColors';
 import { d3FormatNumber } from "../redux/summarySlice";
-import { tempSlicerValueFilter, singleSlicerValue } from "../redux/dataFilterSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { tempSlicerValueFilter } from "../redux/dataFilterSlice";
+import { useDispatch } from "react-redux";
+import { slicerValues } from "../redux/dataFilterSlice";
 
 
 
@@ -28,6 +29,12 @@ const DoughnutChart = ({ data, slicer, sumBy }) => {
   const processedData = processDoughnutData(data, slicer, sumBy);
   const containerRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 400, height: 300 });
+  const [attr, setAttr] = useState(slicerValues.find(item => item.attribute === slicer))
+
+  useEffect(() => {
+    setAttr(slicerValues.find(item => item.attribute === slicer))
+
+  },[slicer])
 
   useEffect(() => {
       // Function to update size dynamically
@@ -82,12 +89,12 @@ const DoughnutChart = ({ data, slicer, sumBy }) => {
       .append("path")
       .merge(arc)
       .attr("d", arcGenerator)
-      .attr('fill', d => colorSuppliersHEX(d.data.key) || '#ccc')
+      .attr('fill', d => colorSuppliersHEX(attr.value.find(item => item.value === d.data.key)?.key || '#ccc'))
       .style('fill-opacity', 0.8)
       .style("cursor", "pointer")
       .on("mouseover", function(event, d) {
         tooltip.style("display", "block")
-          .html(`<strong>${d.data.key
+          .html(`<strong>${attr.value.find(item => item.value === d.data.key)?.key
             .toLowerCase()
             .replace(/\b\w/g, (char) => char.toUpperCase())}</strong>: ${d3FormatNumber(d.data.value)}`);
   
