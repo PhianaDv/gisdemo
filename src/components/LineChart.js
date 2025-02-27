@@ -27,7 +27,7 @@ const processLineChartData = (data, sumBy, mode) => {
     v => sumBy === "count" 
       ? v.length 
       : d3.sum(v, d => d.properties[sumBy] || 0), 
-    d => parseDate(new Date(d.properties.permit_creation_timestamp))
+    d => parseDate(new Date(d.properties.pct))
   );
 
   return aggregatedData

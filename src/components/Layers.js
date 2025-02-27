@@ -8,10 +8,11 @@ import { drilldown, getBbox, testBorders } from '../redux/borderSlice';
 import { viewLevels, changeViewLevel, viewLevelFps } from '../redux/viewStateSlice';
 import { getPointDetailAsync } from '../redux/pointDetailSlice';
 import { pointOpen } from '../redux/pointDetailSlice';
-import { scaleLinear, interpolateRgb, interpolateHsl } from 'd3';
+import { scaleLinear, interpolateRgb, interpolateHsl, zoom } from 'd3';
 import { setTempFilterFp } from '../redux/dataFilterSlice';
 import { switchAnalytics } from '../redux/pageStateSlice';
 import { slicerValues } from '../redux/dataFilterSlice';
+import { use } from 'react';
 
 
 
@@ -23,7 +24,7 @@ const Layers = () => {
     const timeWeight = useSelector((state) => state.summaryState.timeWeightRange)
     const dataFilters = useSelector((state) => state.dataFilterState);
     const slicer = useSelector((state) => state.viewState.slicer);
-    const [attr, setAttr] = useState(slicerValues.find(item => item.attribute === slicer))
+    const [attr, setAttr] = useState(slicerValues.find(item => item.shorthand === slicer))
     const viewType = useSelector((state) => state.viewState.viewType);
     const viewLevel = useSelector((state) => state.viewState.viewLevel);
     const viewLevelFp = useSelector((state) => state.viewState.viewLevelFp);
@@ -41,12 +42,24 @@ const Layers = () => {
     const dispatch = useDispatch();
     const highlightFp = useSelector((state) => state.dataFilterState.tempHighlightFp);
     const filterFp = useSelector((state) => state.dataFilterState.tempFilterFp);
+    const zoomLevel = useSelector((state) => state.viewState.viewState.zoom)
 
 
     useEffect(() => {
-        setAttr(slicerValues.find(item => item.attribute === slicer))
+        setAttr(slicerValues.find(item => item.shorthand === slicer))
     
-      },[slicer])
+      },[slicer]);
+
+      function getElevationScale(zoom) {
+        
+        return zoom > 15 ? 0.25 : zoom > 10 ? 0.5: 1; 
+      }
+      
+    
+      function getCellSize(zoom) {
+       
+        return zoom > 15 ? 50 : zoom > 10 ? 100: 200; 
+      }
 
 
     const colorTimeLayer = useCallback((d) => {
@@ -114,7 +127,7 @@ const Layers = () => {
               result2 = 0
             }
             
-                return [result,result2,d.properties.permit_creation_timestamp]  
+                return [result,result2,d.properties.pct]  
 
     };
 
@@ -139,7 +152,7 @@ const Layers = () => {
         onClick: (o) => {
           dispatch(getPointDetailAsync({
           viewType: viewType,
-          id: o.object.properties.permit_number,
+          id: o.object.properties.pn,
           x:o.x,
           y:o.y
           }));
@@ -204,7 +217,7 @@ const Layers = () => {
         data: pointData,
         getPosition: (d) => d.geometry.coordinates, 
         aggregation: 'SUM',
-        getWeight: d => sumBy==="count"?2:sumBy==="estimated_cost"?Math.sqrt(Math.sqrt(d.properties[sumBy])**1.5):Math.sqrt(d.properties[sumBy]*15),
+        getWeight: d => sumBy==="count"?2:sumBy==="ec"?Math.sqrt(Math.sqrt(d.properties[sumBy])**1.5):Math.sqrt(d.properties[sumBy]*15),
         radiusPixels: 25,
         extensions: [new DataFilterExtension({filterSize: 3})],
         filterRange: [[Object.keys(dataFilters.trueKeys).length, Object.keys(dataFilters.trueKeys).length], [1, 1], timeData.filterRange],
@@ -224,7 +237,7 @@ const Layers = () => {
         pointType: 'circle',
         getPosition: d => d.geometry.coordinates,
         getFillColor: d => colorTotalsLayer(d.properties.totalCount),
-        getRadius: d => sumBy==="count"?Math.sqrt(d.properties.totalCount)**1.6:sumBy==="estimated_cost"?Math.sqrt(Math.sqrt(d.properties.totalCount))**1.2:Math.sqrt(d.properties.totalCount)**1.09,
+        getRadius: d => sumBy==="count"?Math.sqrt(d.properties.totalCount)**1.6:sumBy==="ec"?Math.sqrt(Math.sqrt(d.properties.totalCount))**1.2:Math.sqrt(d.properties.totalCount)**1.09,
         pointRadiusMinPixels: 7,
         pointRadiusMaxPixels: 35,
         updateTriggers: {
@@ -249,7 +262,7 @@ const Layers = () => {
       radiusMinPixels: 1,
       radiusMaxPixels: 35,
       getPosition: d => d.geometry.coordinates,
-      getRadius: d => sumBy==="count"?1*timeData.radiusScale:sumBy==="estimated_cost"?Math.sqrt(Math.sqrt(d.properties[sumBy]))*timeData.radiusScale*0.1:Math.sqrt(d.properties[sumBy])*timeData.radiusScale*0.5,
+      getRadius: d => sumBy==="count"?1*timeData.radiusScale:sumBy==="ec"?Math.sqrt(Math.sqrt(d.properties[sumBy]))*timeData.radiusScale*0.1:Math.sqrt(d.properties[sumBy])*timeData.radiusScale*0.5,
       getFillColor: d => sumBy==="count"?colorTimeLayer(1):colorTimeLayer(d.properties[sumBy]),
       extensions: [new DataFilterExtension({filterSize: 3})],
         filterRange: [[Object.keys(dataFilters.trueKeys).length, Object.keys(dataFilters.trueKeys).length], [1, 1], timeData.filterRange],
@@ -271,15 +284,17 @@ const Layers = () => {
     data: pointData,
     extruded: true,
     getPosition: (d) => d.geometry.coordinates,
-    getColorWeight: (d) => sumBy==="estimated_cost"? d.properties[sumBy]*0.0001:d.properties[sumBy],
-    getElevationWeight: (d) => sumBy==="estimated_cost"? d.properties[sumBy]*0.0001:d.properties[sumBy],
-    elevationScale: 1,
-    cellSize: 200,
-      updateTriggers: {
-        getPosition: [totalsData.filteredFeatures, dataFilters],
-        getColorWeight: [sumBy, totalsData.filteredFeatures, dataFilters],
-        getElevationWeight: [sumBy, totalsData.filteredFeatures, dataFilters],
-      },
+    getColorWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : d.properties[sumBy],
+    getElevationWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : d.properties[sumBy],
+    elevationScale: getElevationScale(zoomLevel), 
+    cellSize: getCellSize(zoomLevel), 
+    updateTriggers: {
+      getPosition: [totalsData.filteredFeatures, dataFilters],
+      getColorWeight: [sumBy, totalsData.filteredFeatures, dataFilters],
+      getElevationWeight: [sumBy, totalsData.filteredFeatures, dataFilters],
+      elevationScale: [zoomLevel],
+      cellSize: [zoomLevel]
+    },
     pickable: true,
     autoHighlight: layerState.gridLayer.autoHighlight
   })

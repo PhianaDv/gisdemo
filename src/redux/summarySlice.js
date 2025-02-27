@@ -289,12 +289,12 @@ const summarySlice = createSlice({
                 
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
-                data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1])
+                data = data.filter((item) => item.properties.pct >= action.payload.timeFilter[0] && item.properties.pct <= action.payload.timeFilter[1])
                 
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && action.payload.timeFilter) {
                 
                 data = action.payload.fpFilter.fp === 0 ? data : data.filter((feature) => feature.properties.blockfp.slice(0,action.payload.fpFilter.viewLevelFp) === action.payload.fpFilter.fp);
-                data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
+                data = data.filter((item) => item.properties.pct >= action.payload.timeFilter[0] && item.properties.pct <= action.payload.timeFilter[1]);
                 
             } else if (!action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
                 
@@ -302,7 +302,7 @@ const summarySlice = createSlice({
                 
             } else if (!action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
                 
-                data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
+                data = data.filter((item) => item.properties.pct >= action.payload.timeFilter[0] && item.properties.pct <= action.payload.timeFilter[1]);
                 
             } else if (action.payload.attributeFilter && action.payload.fpFilter && !action.payload.timeFilter) {
                 
@@ -311,7 +311,7 @@ const summarySlice = createSlice({
                 
             } else if (action.payload.attributeFilter && !action.payload.fpFilter && action.payload.timeFilter) {
                 
-                data = data.filter((item) => item.properties.permit_creation_timestamp >= action.payload.timeFilter[0] && item.properties.permit_creation_timestamp <= action.payload.timeFilter[1]);
+                data = data.filter((item) => item.properties.pct >= action.payload.timeFilter[0] && item.properties.pct <= action.payload.timeFilter[1]);
                 data = data.filter((feature) => feature.properties[action.payload.attributeFilter.attribute] === action.payload.attributeFilter.value);
                 
             } else {

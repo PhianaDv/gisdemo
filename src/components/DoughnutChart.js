@@ -5,6 +5,7 @@ import { d3FormatNumber } from "../redux/summarySlice";
 import { tempSlicerValueFilter } from "../redux/dataFilterSlice";
 import { useDispatch } from "react-redux";
 import { slicerValues } from "../redux/dataFilterSlice";
+import { attrShorthands } from "../redux/viewStateSlice";
 
 
 
@@ -29,10 +30,11 @@ const DoughnutChart = ({ data, slicer, sumBy }) => {
   const processedData = processDoughnutData(data, slicer, sumBy);
   const containerRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 400, height: 300 });
-  const [attr, setAttr] = useState(slicerValues.find(item => item.attribute === slicer))
-
+  const [attr, setAttr] = useState(slicerValues.find(item => item.shorthand === slicer))
+console.log(attr)
   useEffect(() => {
-    setAttr(slicerValues.find(item => item.attribute === slicer))
+    setAttr(slicerValues.find(item => item.shorthand === slicer))
+
 
   },[slicer])
 

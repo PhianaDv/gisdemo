@@ -1,13 +1,12 @@
 import { Checkbox, Box, TextField, Tooltip } from "@mui/material";
 import { FormControlLabel } from '@mui/material';
-import * as d3Select from 'd3-selection';
 import { useEffect, useRef, useState } from "react";
-import * as d3Shape from 'd3-shape';
 import { colorSuppliersHEX } from "../assets/MyColors";
 import { useSelector, useDispatch } from "react-redux";
 import { changeSlicerCheckedValue, clearAllAttribute, selectAllAttribute } from "../redux/dataFilterSlice";
 import { slicers } from "../redux/viewStateSlice";
 import { alpha } from "@mui/material";
+import { attrShorthands } from "../redux/viewStateSlice";
 
 export const Legend = () => {
     const legendData = useSelector((state) => state.dataFilterState);
@@ -75,7 +74,7 @@ export const Legend = () => {
                             borderRight: `1px solid ${alpha("#575959", 0.7)}`,
                             
                         }}
-                            key={el.attribute}>
+                            key={el.shorthand}>
                             <div style={{
                                 height: "60px",
                                 backgroundColor: `${alpha("#575959", 1)}`,
@@ -86,12 +85,12 @@ export const Legend = () => {
                                 alignItems: "center"
                             }}>
                                 <Box component="div" fontSize={14} padding={1}>
-                                    {mainSliceValues[el.attribute]}
+                                    {mainSliceValues[el.shorthand]}
                                 </Box>
         
                                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: "10px" }}>
                                     <button 
-                                        disabled={el.attribute === chartSelected.attribute} 
+                                        disabled={el.shorthand === chartSelected.attribute} 
                                         variant="contained" 
                                         onClick={(e) => dispatch(selectAllAttribute(el.attribute))}>
                                         Select All

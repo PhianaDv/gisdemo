@@ -23,29 +23,36 @@ export const INITIAL_VIEW_STATE = {
 
 export const viewTypes = {
     "Permits":{"Include Non-Primary Addresses": false},
-    "Customers":{"Include Zero Billing": false}
 };
 
 export const sumByValues = {
     Permits:{
-        estimated_cost: "Estimated Cost",
-        proposed_units: "Proposed Units",
+        ec: "Estimated Cost",
+        pu: "Proposed Units",
         count: "Permit Count",
-      },
-      Customers:{
-        customercount: "Customer Count",
-        mrr: "Monthly Revenue"
       },
 };
 
 export const slicers = {
     Permits:{
-        "status":"Status",
-        "proposed_use":"Proposed Use",
-        "permit_type_definition":"Permit Type",
-        "proposed_units_tier":"Proposed Units Tier",
+        "s":"Status",
+        "pu":"Proposed Use",
+        "pt":"Permit Type",
+        "put":"Proposed Units Tier",
     },
 };
+
+export const attrShorthands = {
+        "status":"s",
+        "proposed_use":"pu",
+        "permit_type_definition":"pt",
+        "proposed_units_tier":"put",
+        "estimated_cost": "ec",
+        "proposed_units": "pu",
+        "permit_creation_timestamp": "pct",
+        "permit_number": "pn"
+
+}
 
 export const viewLevels = [
     "Tract","BlockGroup","Block"
@@ -67,8 +74,8 @@ const initialState = {
     viewType: "Permits",
     fid: [],
     pastFid: [],
-    slicer: "proposed_use",
-    sumBy:  "estimated_cost",
+    slicer: "pu",
+    sumBy:  "ec",
     mapStyle: "https://api.maptiler.com/maps/62ab0c0b-09b1-4c58-b0c4-2e82ca1cf5ed/style.json?key=YbCPLULzWdf1NplssEIc",
     inclusionState: viewTypes,
     rmax: 10,

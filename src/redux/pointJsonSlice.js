@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { attrShorthands } from "./viewStateSlice";
 
 export const pointData = `https://raw.githubusercontent.com/PhianaDv/data/refs/heads/main/sf_building_permits.json`
 
@@ -19,13 +20,14 @@ export const getPointsAsync = createAsyncThunk(
       
       if (response.ok) {
         const pointData = await response.json();
+       
         return pointData
         }
       }
     
   );
   
-
+  
   
 const pointJsonSlice = createSlice({
     name: "pointJsonSlice",
@@ -45,7 +47,7 @@ const pointJsonSlice = createSlice({
               }
 
               
-                const times = state.data.features.map(d => d.properties.permit_creation_timestamp);
+                const times = state.data.features.map(d => d.properties.pct);
                 // Sort the totals to calculate percentiles
                 times.sort((a, b) => a - b);
           

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 export const excludePropName = {
   Permits: "primary_address_flag",
@@ -7,7 +7,7 @@ export const excludePropName = {
 
 export const slicerValues = [
   {
-    "attribute": "permit_type_definition",
+    "attribute": "permit_type_definition", "shorthand":"pt",
     "value": [
       {"key": "additions alterations or repairs", "value": 1, "checked": true},
       {"key": "sign - erect", "value": 2, "checked": true},
@@ -20,7 +20,7 @@ export const slicerValues = [
     ]
   },
   {
-    "attribute": "proposed_units_tier",
+    "attribute": "proposed_units_tier", "shorthand":"put",
     "value": [
       {"key": "51-100", "value": 1, "checked": true},
       {"key": "1", "value": 2, "checked": true},
@@ -33,7 +33,7 @@ export const slicerValues = [
     ]
   },
   {
-    "attribute": "proposed_use",
+    "attribute": "proposed_use", "shorthand":"pu",
     "value": [
       {"key": "mortuary", "value": 1, "checked": true},
       {"key": "hospital", "value": 2, "checked": true},
@@ -132,7 +132,7 @@ export const slicerValues = [
     ]
   },
   {
-    "attribute": "status",
+    "attribute": "status", "shorthand": "s",
     "value": [
       {"key": "cancelled", "value": 1, "checked": true},
       {"key": "appeal", "value": 2, "checked": true},
@@ -192,7 +192,7 @@ const dataFilterSlice = createSlice({
         state.trueKeys = {};
         let myData = {}
         for (let i=0;i<state.slicerValues.length;i++) {
-          myData[state.slicerValues[i].attribute]= state.slicerValues[i].value.filter((d) => {return d.checked === true}).map((a) => a.value)
+          myData[state.slicerValues[i].shorthand]= state.slicerValues[i].value.filter((d) => {return d.checked === true}).map((a) => a.value)
         };
         state.trueKeys = myData
       },
