@@ -57,3 +57,46 @@ opacity:0.8;
   z-index: 1000;
 }
 
+@media (max-width: 768px) {
+
+  .MenuArea {
+    width: 12%;
+    float: left;
+  }
+
+
+  .MuiDrawer-paper {
+    width: max-content !important;
+    min-width: 62%;
+    max-width: 88% !important; /* Drawer takes 88% of the screen width on mobile */
+    margin-left: 12% !important; /* 12% left margin */
+    position: fixed !important; /* Fixes the drawer at the top */
+    top: 0;
+    bottom: 0;
+    left: 12%;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    background-color: #29323c;
+    transition: all 0.3s ease-in-out;
+    flex-direction: column;
+    height: "fit-content";
+    max-height: 100vh;
+  }
+
+  .layerDrawerItem {
+    border-right: none;
+    border-bottom: "1px solid rgba(87, 89, 89, 0.7)";
+    border-bottom-width: 100%;
+  }
+
+  .buttonLayer {
+    text-align: flex-start;
+    padding: 1;
+  }
+
+  .analyticsCharts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between stacked elements */
+  }
+}

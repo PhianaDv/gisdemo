@@ -24,6 +24,7 @@ const AnalyticsCharts = () => {
 
   return (
     <div
+     className="analyticsCharts"
       style={{
         display: "grid",
         gridTemplateRows: "35vh auto", 
@@ -43,7 +44,7 @@ const AnalyticsCharts = () => {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", padding: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", padding: "10px" , alignSelf: "center"}}>
           <div style={{ textAlign: "center", fontWeight: "bold" }}>
             {slicerName} Distribution
             <Divider style={{width: "100%"}}/>

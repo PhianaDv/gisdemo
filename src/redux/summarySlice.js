@@ -114,21 +114,6 @@ const initialState = {
     }
   );
 
-  export const applyTimeFilterAsync = createAsyncThunk(
-    "summary/applyTimeFilterAsync",
-    async (payload, { getState }) => {
-     
-        const state = getState().summaryState;
-        
-        const filteredFeatures = state.filteredFeatures.filter(
-            (item) => item.properties.permit_creation_timestamp >= payload[0] && 
-            item.properties.permit_creation_timestamp <= payload[1]);
-
-            return filteredFeatures;
-
-        }
-  );
-
   export const totalDataAsync = createAsyncThunk(
     "slice/totalDataAsync",
     async (payload, { getState }) => {

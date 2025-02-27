@@ -23,7 +23,9 @@ const LoaderSub = (props) => {
             style={{
                 display: `!${openSub}?"None":"block"`,
                 backgroundImage: `${loading}`,
-                backgroundSize: "100%",
+                backgroundSize: "cover", // Ensure the image stretches to cover the entire div
+                backgroundRepeat: "no-repeat", // Prevent the image from repeating
+                backgroundPosition: "center", // Center the image (optional)
 
             }}>
             {!openPage ? (<></>) : (<div className="attrText">
@@ -33,7 +35,7 @@ const LoaderSub = (props) => {
            
             <DrawerItems key="DrawerItems">
                 {openPage ?
-                    (<div className="loaderPageText">Loading Demo GIS Analytics</div>)
+                    (<div style={{textAlign: "center"}} className="loaderPageText">Loading Demo GIS Analytics</div>)
                     : (<div className="loaderText">Loading</div>)}
                 <div className="loader">
                     <div className="sk-chase-dot" style={{'--background':`${skcolors}`}}></div>

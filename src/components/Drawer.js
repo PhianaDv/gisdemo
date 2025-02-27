@@ -37,8 +37,12 @@ const btnStyle = {
 
 const DrawerItems = styled("div")(({ theme }) => ({
   display: "flex",
-  flexDirection: "row",
-  width: "94%"
+  flexDirection: "row", // Default flex direction for desktop
+  width: "fit-content",
+  height: "fit-content",
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column", // Change to column layout on mobile
+  },
 }));
 const DrawerClose = styled("div")(({ theme }) => ({
   width: "6",
@@ -84,9 +88,10 @@ export default function Drawers(props) {
   return (
     <Drawer
       key={myKey}
+      className="drawers"
       sx={{
-        height: { height },
-        width: { width },
+        height: "fit-content",
+        width: "fit-content",
         marginLeft: { marginLeft },
         marginTop: { marginTop },
         marginBottom: {marginBottom},
@@ -95,8 +100,8 @@ export default function Drawers(props) {
         flexDirection: "column",
         float: "left",
         "& .MuiDrawer-paper": {
-          height: { height },
-          width: { width },
+          height: "fit-content",
+          width: "fit-content",
           padding: { padding },
           marginLeft: { marginLeft },
           marginBottom: {marginBottom},
@@ -117,14 +122,32 @@ export default function Drawers(props) {
        {!ToggleList ? (
           <></>
         ) : (
-          <div style={{
+          <div className="layerDrawerItem"
+                style={{
                   display: "flex", 
                   flexDirection:"row", 
-                  width:"20%",
-                  height: "68%",
-                  backgroundColor:alpha("#575959", 0.4)
+                  width:"fit-content",
+                  height: "fit-content",
+                  backgroundColor:alpha("#575959", 0.4),
+                  borderRight: "1px solid rgba(87, 89, 89, 0.7)",
+                  borderBottom: "1px solid rgba(87, 89, 89, 0.7)"
                 }}>
-            <ButtonDescription key={"PermitGroups"} sx={{height: "100%", width:"50%", marginLeft:"5%", alignContent:"center"}}>Permit</ButtonDescription>
+            <ButtonDescription className="buttonLayer" key={"PermitGroups"} sx={{alignSelf:"center", paddingLeft:1}}>Permit
+            <Tooltip
+                key={"ttPermitLayer"}
+                title={permitsVisible === false ? "Show" : "Hide"}
+                placement="bottom"
+              >
+                <IconButton id="PermitLayerSwitch" onClick={TogglePermits} style={{marginLeft:10, marginTop:-1}}>
+                  {permitsVisible === false ? (
+                    <FaEyeSlash size="22px" color="white" />
+                  ) : (
+                    <FaEye size="22px" color="white" />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </ButtonDescription>
+            
              <ToggleButtonGroup
             key="tgPermitLayer"
             value={currentPermitStyle}
@@ -149,19 +172,7 @@ export default function Drawers(props) {
           ))}
           </ToggleButtonGroup>
          
-          <Tooltip
-                key={"ttPermitLayer"}
-                title={permitsVisible === false ? "Show" : "Hide"}
-                placement="bottom"
-              >
-                <IconButton id="PermitLayerSwitch" onClick={TogglePermits}>
-                  {permitsVisible === false ? (
-                    <FaEyeSlash size="22px" color="white" />
-                  ) : (
-                    <FaEye size="22px" color="white" />
-                  )}
-                </IconButton>
-              </Tooltip>
+
           
           <Divider orientation="vertical"/>
          
@@ -172,12 +183,13 @@ export default function Drawers(props) {
           <></>
         ) : (
           Object.entries(ButtonList).map(([key, value]) => (
-            <div 
-              style={{borderRight: `1px solid ${alpha("#575959", 0.7)}`, 
+            <div layerDrawerItem
+              style={{ borderRight: "1px solid rgba(87, 89, 89, 0.7)",
+                borderBottom: "1px solid rgba(87, 89, 89, 0.7)",
               display: "flex", 
               flexDirection: "column",
               paddingLeft:4}}>
-            <ButtonDescription key={"bd" + key} sx={{alignSelf:"center"}}>
+            <ButtonDescription key={"bd" + key} className="buttonLayer" sx={{alignSelf:"center"}}>
               {key}
               <Tooltip
                 key={"tt" + key}
@@ -196,7 +208,7 @@ export default function Drawers(props) {
             {value[1] == undefined ? (<></>) :
             <FormControlLabel
               sx={{
-                height:"40%"
+                height:"fit-content"
               }}
               control={
               <Checkbox 
@@ -223,7 +235,7 @@ export default function Drawers(props) {
               />
             }
               label={
-              <Box component="div" fontSize={12}>
+              <Box component="div" fontSize={12} sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                  Autohighlight
               </Box>
             }/>
@@ -259,7 +271,7 @@ export default function Drawers(props) {
                   //style={{accentColor:colorSuppliers(key)}}
                   />}
                   label={
-                    <Box component="div" fontSize={12}>
+                    <Box component="div" fontSize={12} sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                        Show Buildings
                      </Box>
                }
