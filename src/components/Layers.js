@@ -284,8 +284,8 @@ const Layers = () => {
     data: pointData,
     extruded: true,
     getPosition: (d) => d.geometry.coordinates,
-    getColorWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : d.properties[sumBy],
-    getElevationWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : d.properties[sumBy],
+    getColorWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : sumBy === "count" ? 1 : d.properties[sumBy],
+    getElevationWeight: (d) => sumBy === "ec" ? d.properties[sumBy] * 0.0001 : sumBy === "count" ? 1 : d.properties[sumBy],
     elevationScale: getElevationScale(zoomLevel), 
     cellSize: getCellSize(zoomLevel), 
     updateTriggers: {
