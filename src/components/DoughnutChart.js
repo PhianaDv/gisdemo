@@ -153,7 +153,7 @@ console.log(attr)
       .text(d3FormatNumber(totalSum))
       .style("fill", "white");
   
-  }, [data, slicer, sumBy]);
+  }, [data, slicer, sumBy, attr]);
 
   return (
     <div ref={containerRef}>
