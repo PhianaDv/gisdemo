@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { colorSuppliersHEX } from '../assets/MyColors';
 import { d3FormatNumber } from "../redux/summarySlice";
 import { tempSlicerValueFilter } from "../redux/dataFilterSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { slicerValues } from "../redux/dataFilterSlice";
 import { attrShorthands } from "../redux/viewStateSlice";
 
@@ -31,6 +31,7 @@ const DoughnutChart = ({ data, slicer, sumBy }) => {
   const containerRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 400, height: 300 });
   const [attr, setAttr] = useState(slicerValues.find(item => item.shorthand === slicer))
+  const sliceby = useSelector((state) => state.viewState.slicer)
 console.log(attr)
   useEffect(() => {
     setAttr(slicerValues.find(item => item.shorthand === slicer))
@@ -153,7 +154,7 @@ console.log(attr)
       .text(d3FormatNumber(totalSum))
       .style("fill", "white");
   
-  }, [data, slicer, sumBy, attr]);
+  }, [data, slicer, sumBy, attr, sliceby]);
 
   return (
     <div ref={containerRef}>
