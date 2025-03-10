@@ -198,7 +198,7 @@ const TemporalAdjusters = () => {
         marks={radiusMarks}
       />
     </Stack>
-    <Stack padding={1} spacing={2} direction={"row"} alignItems="center">
+    {/* <Stack padding={1} spacing={2} direction={"row"} alignItems="center">
     <Typography alignSelf="center" fontSize={14} width={"32%"}>Height</Typography>
       <Slider
         key={"heightScale"}
@@ -218,7 +218,7 @@ const TemporalAdjusters = () => {
         }}
         marks={heightMarks}
       />
-    </Stack>
+    </Stack> */}
     <Stack padding={1} spacing={2} direction={"row"} alignItems="center">
     <Typography alignSelf="center" fontSize={14} width={"32%"}>Speed</Typography>
       <Slider
