@@ -146,7 +146,7 @@ const Layers = () => {
         filterRange: [[Object.keys(dataFilters.trueKeys).length, Object.keys(dataFilters.trueKeys).length], [1, 1], timeData.filterRange],
         getFilterValue: (d) => filterValues(d),
         updateTriggers: {
-          getFillColor: [pointData, slicer],
+          getFillColor: [pointData, slicer, attr],
           getFilterValue: [dataFilters, viewLevelFp, timeData],
           },
         onClick: (o) => {
