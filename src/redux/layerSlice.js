@@ -24,7 +24,7 @@ const heatmapLayer = {
 
 const pointLayer = {
     id: "Permit Points",
-    visible: false,
+    visible: true,
     enabled: true,
 };
 
@@ -54,7 +54,7 @@ const temporalLayer = {
 
 const totalsLayer = {
     id: "Permit Totals",
-    visible: true,
+    visible: false,
     enabled: true,
 }
 
