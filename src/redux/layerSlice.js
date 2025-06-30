@@ -69,7 +69,7 @@ const initialState = {
         totalsLayer
     },
     data: {
-        currentLayerStyle: "Permit Totals",
+        currentLayerStyle: "Permit Points",
         permitsVisible: true,
         building: {"building" : false},
     }
