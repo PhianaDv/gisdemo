@@ -177,7 +177,7 @@ const Layers = () => {
           if (viewLevels.indexOf(viewLevel)+1 === viewLevels.length) {
             alert("Already at lowest drill level.")
           } else if (viewLevels.indexOf(viewLevel)+1 !== viewLevels.length) {
-            
+            console.log(o.object.properties.id);
             testBorders(viewLevels[nextViewLevel],o.object.properties.id).then(
             function (r) {
               if (r===1) {
