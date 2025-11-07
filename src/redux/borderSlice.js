@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import bbox from "@turf/bbox";
 
-const SF_APP_TOKEN = process.env.sfdata;
+
 
 
 const initialState= {
@@ -14,7 +14,7 @@ const initialState= {
 export const flyToPolygon = (fid) => ({
     Tract: `https://services3.arcgis.com/i2dkYWmb4wHvYPda/ArcGIS/rest/services/Bay_Area_Census_Tracts_2010/FeatureServer/0/query?outFields=*&f=geojson&where=GEOID10='${fid}'`,
     BlockGroup: `https://services3.arcgis.com/i2dkYWmb4wHvYPda/ArcGIS/rest/services/region_blockgroup/FeatureServer/0/query?outFields=*&f=geojson&where=blkgrpid='${fid}'`,
-    Block: `https://data.sfgov.org/api/v3/views/hn5x-7sr8/query.geojson?query=SELECT%20the_geom%2C%20countyfp10%2C%20tractce10%2C%20statefp10%2C%20blockce10%2C%20geoid10%2C%20name10%2C%20mtfcc10%2C%20ur10%2C%20uace10%2C%20funcstat10%2C%20aland10%2C%20awater10%2C%20intptlat10%2C%20intptlon10%20WHERE%20(%60geoid10%60%20%3D%20'${fid}')&app_token=${SF_APP_TOKEN}`
+    Block: `https://data.sfgov.org/api/v3/views/hn5x-7sr8/query.geojson?query=SELECT%20the_geom%2C%20countyfp10%2C%20tractce10%2C%20statefp10%2C%20blockce10%2C%20geoid10%2C%20name10%2C%20mtfcc10%2C%20ur10%2C%20uace10%2C%20funcstat10%2C%20aland10%2C%20awater10%2C%20intptlat10%2C%20intptlon10%20WHERE%20(%60geoid10%60%20%3D%20'${fid}')&app_token=2AnL0DAflgScJ0mbHJryjOWoa`
 });
 
 export const getBbox = createAsyncThunk(
@@ -54,7 +54,7 @@ function tBorders (viewLevel, upperfid) {
     switch (viewLevel) {
         case "Tract": return 1;
         case "BlockGroup": return `https://services3.arcgis.com/i2dkYWmb4wHvYPda/ArcGIS/rest/services/region_blockgroup/FeatureServer/0/query?where=blkgrpid+LIKE+%27${upperfid}%25%27&resultRecordCount=1&outFields=*&f=pjson`        ;
-        case "Block": return `https://data.sfgov.org/api/v3/views/hn5x-7sr8/query.geojson?query=SELECT%20the_geom%2C%20countyfp10%2C%20tractce10%2C%20statefp10%2C%20blockce10%2C%20geoid10%2C%20name10%2C%20mtfcc10%2C%20ur10%2C%20uace10%2C%20funcstat10%2C%20aland10%2C%20awater10%2C%20intptlat10%2C%20intptlon10%20WHERE%20(upper(%60geoid10%60)%20LIKE%20'%25${upperfid}%25')&app_token=${SF_APP_TOKEN}&limit=1`
+        case "Block": return `https://data.sfgov.org/api/v3/views/hn5x-7sr8/query.geojson?query=SELECT%20the_geom%2C%20countyfp10%2C%20tractce10%2C%20statefp10%2C%20blockce10%2C%20geoid10%2C%20name10%2C%20mtfcc10%2C%20ur10%2C%20uace10%2C%20funcstat10%2C%20aland10%2C%20awater10%2C%20intptlat10%2C%20intptlon10%20WHERE%20(upper(%60geoid10%60)%20LIKE%20'%25${upperfid}%25')&app_token=2AnL0DAflgScJ0mbHJryjOWoa&limit=1`
         ;
         default: return 1;
     }
