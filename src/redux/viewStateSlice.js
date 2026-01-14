@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+const MAPTILER_KEY = process.env.PUBLIC_MAPTILER_KEY;
 
 
 export const mapStyle = {
     Dark:
-    "https://api.maptiler.com/maps/62ab0c0b-09b1-4c58-b0c4-2e82ca1cf5ed/style.json?key=YbCPLULzWdf1NplssEIc",
+    `https://api.maptiler.com/maps/62ab0c0b-09b1-4c58-b0c4-2e82ca1cf5ed/style.json?key=${MAPTILER_KEY}`,
     Light:
-    "https://api.maptiler.com/maps/streets/style.json?key=YbCPLULzWdf1NplssEIc",
+    `https://api.maptiler.com/maps/streets/style.json?key=${MAPTILER_KEY}`,
     Hybrid:
-    "https://api.maptiler.com/maps/9794dbc1-8802-47ca-b19c-f73988a09fda/style.json?key=YbCPLULzWdf1NplssEIc"
+    `https://api.maptiler.com/maps/9794dbc1-8802-47ca-b19c-f73988a09fda/style.json?key=${MAPTILER_KEY}`
 };
 
 export const INITIAL_VIEW_STATE = {
@@ -76,7 +77,7 @@ const initialState = {
     pastFid: [],
     slicer: "pu",
     sumBy:  "ec",
-    mapStyle: "https://api.maptiler.com/maps/62ab0c0b-09b1-4c58-b0c4-2e82ca1cf5ed/style.json?key=YbCPLULzWdf1NplssEIc",
+    mapStyle: `https://api.maptiler.com/maps/62ab0c0b-09b1-4c58-b0c4-2e82ca1cf5ed/style.json?key=${MAPTILER_KEY}`,
     inclusionState: viewTypes,
     rmax: 10,
     scale: Math.sqrt((INITIAL_VIEW_STATE.zoom/5)**2),
