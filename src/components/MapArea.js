@@ -193,17 +193,16 @@ useEffect(() => {
       case true: map.setLayoutProperty("building-3d", 'visibility', 'visible'); break;
     };
   }, [layerState.data.building.building, mapLoaded])
-
-  useEffect(() => {
-
-    mapStyle ===
-      "https://api.maptiler.com/maps/streets/style.json?key=YbCPLULzWdf1NplssEIc"
-      ? setBackGroundColor("#BBD6DC")
-      : mapStyle ===
-        "https://api.maptiler.com/maps/hybrid/style.json?key=YbCPLULzWdf1NplssEIc#0.8/-14.45028/20.54042"
-        ? setBackGroundColor("#6BD1EA")
-        : setBackGroundColor("#1F4E71")
-  }, [mapStyle]);
+  
+useEffect(() => {
+  if (mapStyle?.startsWith("https://api.maptiler.com/maps/streets/")) {
+    setBackGroundColor("#BBD6DC");
+  } else if (mapStyle?.startsWith("https://api.maptiler.com/maps/hybrid/")) {
+    setBackGroundColor("#6BD1EA");
+  } else {
+    setBackGroundColor("#1F4E71");
+  }
+}, [mapStyle]);
   
   
   const onMapLoad = useCallback(() => {
